@@ -50,7 +50,23 @@ int Queue::count() {
 }
 
 bool Queue::exists(int id) {
-    return false;
+    /* ****************************************
+    exists - check if an id is in the queue
+
+    @param id (int) : id to search for
+    @return true if found, false otherwise
+    @exception none
+    @note none
+    *********************************************/
+    bool found = false;
+    Node *current = head;
+    while (current != nullptr && !found) {
+        if (current->data.id == id) {
+            found = true;
+        }
+        current = current->next;
+    }
+    return found;
 }
 
 int Queue::find(int id) {
