@@ -38,52 +38,142 @@ int main() {
 
     srand(static_cast<unsigned>(time(NULL)));
 
+    // ================================================
     // SECTION 1: Constructor
+    // ================================================
 
     cout << "=== Section 1: Constructor ===" << endl;
     {
-        int passed = 0, failed = 0;
+        int constructed = 0, notConstructed = 0;
 
         // default constructor should produce a valid empty LIFO queue
-        Queue def;
-        if (def.count() == 0) {
-            passed++;
+        Queue defaultQueue;
+        if (defaultQueue.count() == 0) {
+            constructed++;
         } else {
-            failed++;
+            notConstructed++;
         }
-        if (def.peek() == -1) {
-            passed++;
+        if (defaultQueue.peek() == -1) {
+            constructed++;
         } else {
-            failed++;
+            notConstructed++;
         }
 
         // explicit LIFO
         Queue lifo(LIFO);
         if (lifo.count() == 0) {
-            passed++;
+            constructed++;
         } else {
-            failed++;
+            notConstructed++;
         }
         if (lifo.peek() == -1) {
-            passed++;
+            constructed++;
         } else {
-            failed++;
+            notConstructed++;
         }
 
         // explicit FIFO
         Queue fifo(FIFO);
         if (fifo.count() == 0) {
-            passed++;
+            constructed++;
         } else {
-            failed++;
+            notConstructed++;
         }
         if (fifo.peek() == -1) {
-            passed++;
+            constructed++;
         } else {
-            failed++;
+            notConstructed++;
         }
 
-        cout << "passed: " << passed << " | failed: " << failed << endl << endl;
+        cout << "constructed: " << constructed << " | notConstructed: " << notConstructed << endl << endl;
+    }
+
+    // ================================================
+    // SECTION 2: Empty Queue
+    // ================================================
+    cout << "=== Section 2: Empty Queue ===" << endl;
+    {
+        int correct = 0, incorrect = 0;
+        Data dataBuffer;
+
+        Queue lifo(LIFO);
+        Queue fifo(FIFO);
+
+        // count on empty should be 0
+        if (lifo.count() == 0) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.count() == 0) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // peek on empty should return -1
+        if (lifo.peek() == -1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.peek() == -1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // pull on empty should return false and set d to {-1, ""}
+        if (!lifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (!fifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // exists on empty should return false
+        if (!lifo.exists(1)) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (!fifo.exists(1)) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // find on empty should return -1
+        if (lifo.find(1) == -1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.find(1) == -1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // clear on empty should not crash and leave count at 0
+        lifo.clear();
+        fifo.clear();
+        if (lifo.count() == 0) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.count() == 0) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        cout << "correct: " << correct << " | incorrect: " << incorrect << endl << endl;
     }
 
     return 0;
