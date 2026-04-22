@@ -251,5 +251,120 @@ int main() {
         cout << "rejected: " << rejected << " | notRejected: " << notRejected << endl << endl;
     }
 
+    // ================================================
+    // SECTION 4: Single Element
+    // ================================================
+    cout << "=== Section 4: Single Element ===" << endl;
+    {
+        int correct = 0, incorrect = 0;
+        Data dataBuffer;
+        string info = rand_string();
+
+        Queue lifo(LIFO);
+        Queue fifo(FIFO);
+
+        // push one item into each
+        lifo.push(1, info);
+        fifo.push(1, info);
+
+        // count should be 1
+        if (lifo.count() == 1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.count() == 1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // peek should return that id without removing it
+        if (lifo.peek() == 1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.peek() == 1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // count should still be 1 after peek
+        if (lifo.count() == 1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.count() == 1) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // exists should return true
+        if (lifo.exists(1)) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.exists(1)) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // find should return position 0
+        if (lifo.find(1) == 0) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.find(1) == 0) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // pull should return true with correct data
+        if (lifo.pull(dataBuffer) && dataBuffer.id == 1 && dataBuffer.information == info) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.pull(dataBuffer) && dataBuffer.id == 1 && dataBuffer.information == info) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // count should be 0 after pull
+        if (lifo.count() == 0) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (fifo.count() == 0) {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        // second pull should fail and set dataBuffer to {-1, ""}
+        if (!lifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
+            correct++;
+        } else {
+            incorrect++;
+        }
+        if (!fifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
+            correct++;
+        } else {
+            incorrect++;
+        }
+
+        cout << "correct: " << correct << " | incorrect: " << incorrect << endl << endl;
+    }
+
     return 0;
 }
