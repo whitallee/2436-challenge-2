@@ -455,5 +455,89 @@ int main() {
         cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/28" << endl << endl;
     }
 
+    // ================================================
+    // SECTION 7: Clear
+    // ================================================
+    cout << "=== Section 7: Clear ===" << endl;
+    {
+        int pushed = 0, counted = 0, peeked = 0, pulled = 0;
+        Data dataBuffer;
+        string info = rand_string();
+
+        Queue lifo(LIFO);
+        Queue fifo(FIFO);
+
+        // push several items into each
+        for (int i = 1; i <= 5; i++) {
+            if (lifo.push(i, info)) {
+                pushed++;
+            }
+            if (fifo.push(i, info)) {
+                pushed++;
+            }
+        }
+
+        // count should be 5 before clear
+        if (lifo.count() == 5) {
+            counted++;
+        }
+        if (fifo.count() == 5) {
+            counted++;
+        }
+
+        // clear both
+        lifo.clear();
+        fifo.clear();
+
+        // count should be 0 after clear
+        if (lifo.count() == 0) {
+            counted++;
+        }
+        if (fifo.count() == 0) {
+            counted++;
+        }
+
+        // peek should return -1 after clear
+        if (lifo.peek() == -1) {
+            peeked++;
+        }
+        if (fifo.peek() == -1) {
+            peeked++;
+        }
+
+        // pull should fail after clear
+        if (!lifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
+            pulled++;
+        }
+        if (!fifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
+            pulled++;
+        }
+
+        // push again after clear should work normally
+        for (int i = 1; i <= 5; i++) {
+            if (lifo.push(i, info)) {
+                pushed++;
+            }
+            if (fifo.push(i, info)) {
+                pushed++;
+            }
+        }
+
+        // count should be 5 again
+        if (lifo.count() == 5) {
+            counted++;
+        }
+        if (fifo.count() == 5) {
+            counted++;
+        }
+
+        // pushed: 20/20 | counted: 6/6 | peeked: 2/2 | pulled: 2/2
+        cout << "pushed: " << pushed << "/20 | ";
+        cout << "counted: " << counted << "/6 | ";
+        cout << "peeked: " << peeked << "/2 | ";
+        cout << "pulled: " << pulled << "/2" << endl;
+        cout << "total: " << (pushed + counted + peeked + pulled) << "/30" << endl << endl;
+    }
+
     return 0;
 }
