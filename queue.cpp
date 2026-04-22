@@ -130,4 +130,23 @@ bool Queue::pull(Data& dataOut) {
 }
 
 void Queue::clear() {
+    /* ****************************************
+    clear - remove all items from the queue
+
+    @param none
+    @return void
+    @exception none
+    @note deletes all nodes without returning data;
+          resets head, tail, and size.
+    *********************************************/
+    Node *current = head;
+    Node *next = nullptr;
+    while (current != nullptr) {
+        next = current->next;
+        delete current;
+        current = next;
+    }
+    head = nullptr;
+    tail = nullptr;
+    size = 0;
 }
