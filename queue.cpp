@@ -66,8 +66,46 @@ bool Queue::push(int id, std::string& information) {
     return pushed;
 }
 
-bool Queue::pull(Data& d) {
-    return false;
+bool Queue::pull(Data& dataOut) {
+    /* ****************************************
+    pull - remove the next item from the queue
+
+    @param d (Data&) : struct to fill with pulled data
+    @return true if pulled successfully, false if empty
+    @exception none
+    @note LIFO removes from head; FIFO removes from tail.
+          Sets d to {-1, ""} if queue is empty.
+    *********************************************/
+    bool pulled = false;
+    if (head != nullptr) {
+        Node *toDelete = nullptr;
+        if (type == LIFO) {
+            dataOut = head->data;
+            toDelete = head;
+            head = head->next;
+            if (head != nullptr) {
+                head->prev = nullptr;
+            } else {
+                tail = nullptr;
+            }
+        } else {
+            dataOut = tail->data;
+            toDelete = tail;
+            tail = tail->prev;
+            if (tail != nullptr) {
+                tail->next = nullptr;
+            } else {
+                head = nullptr;
+            }
+        }
+        delete toDelete;
+        size--;
+        pulled = true;
+    } else {
+        dataOut.id = -1;
+        dataOut.information = "";
+    }
+    return pulled;
 }
 
 void Queue::clear() {
