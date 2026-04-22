@@ -746,5 +746,5 @@ int main() {
         cout << "SOME TESTS FAILED" << endl;
     }
 
-    return 0;
+    return (sectionsPassed == 8) ? 0 : 1;
 }
