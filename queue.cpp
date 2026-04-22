@@ -70,7 +70,37 @@ bool Queue::exists(int id) {
 }
 
 int Queue::find(int id) {
-    return -1;
+    /* ****************************************
+    find - return the zero-based position of an id
+
+    @param id (int) : id to search for
+    @return zero-based position, or -1 if not found
+    @exception none
+    @note LIFO: position 0 is the tail, counting toward head.
+          FIFO: position 0 is the head, counting toward tail.
+    *********************************************/
+    int position = -1;
+    int index = 0;
+    if (type == LIFO) {
+        Node *current = tail;
+        while (current != nullptr && position == -1) {
+            if (current->data.id == id) {
+                position = index;
+            }
+            index++;
+            current = current->prev;
+        }
+    } else {
+        Node *current = head;
+        while (current != nullptr && position == -1) {
+            if (current->data.id == id) {
+                position = index;
+            }
+            index++;
+            current = current->next;
+        }
+    }
+    return position;
 }
 
 bool Queue::push(int id, std::string& information) {
