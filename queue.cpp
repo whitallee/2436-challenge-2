@@ -37,7 +37,33 @@ int Queue::find(int id) {
 }
 
 bool Queue::push(int id, std::string& information) {
-    return false;
+    /* ****************************************
+    push - add an item to the head of the queue
+
+    @param id (int) : id of item to add
+    @param information (string&) : data to store
+    @return true if pushed successfully, false otherwise
+    @exception none
+    @note id must be > 0 and information non-empty
+    *********************************************/
+    bool pushed = false;
+    if (id > 0 && !information.empty()) {
+        Node *newNode = new Node;
+        newNode->data.id = id;
+        newNode->data.information = information;
+        newNode->prev = nullptr;
+        newNode->next = head;
+        if (head != nullptr) {
+            head->prev = newNode;
+        }
+        head = newNode;
+        if (tail == nullptr) {
+            tail = newNode;
+        }
+        size++;
+        pushed = true;
+    }
+    return pushed;
 }
 
 bool Queue::pull(Data& d) {
