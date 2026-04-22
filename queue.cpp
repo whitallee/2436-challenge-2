@@ -81,24 +81,13 @@ int Queue::find(int id) {
     *********************************************/
     int position = -1;
     int index = 0;
-    if (type == LIFO) {
-        Node *current = tail;
-        while (current != nullptr && position == -1) {
-            if (current->data.id == id) {
-                position = index;
-            }
-            index++;
-            current = current->prev;
+    Node *current = (type == LIFO) ? tail : head;
+    while (current != nullptr && position == -1) {
+        if (current->data.id == id) {
+            position = index;
         }
-    } else {
-        Node *current = head;
-        while (current != nullptr && position == -1) {
-            if (current->data.id == id) {
-                position = index;
-            }
-            index++;
-            current = current->next;
-        }
+        index++;
+        current = (type == LIFO) ? current->prev : current->next;
     }
     return position;
 }
