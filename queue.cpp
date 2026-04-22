@@ -21,7 +21,20 @@ Queue::~Queue() {
 }
 
 int Queue::peek() {
-    return -1;
+    /* ****************************************
+    peek - return the id of the next item to be pulled
+
+    @param none
+    @return id of next item, or -1 if empty
+    @exception none
+    @note does not remove anything from the queue.
+          LIFO peeks at head; FIFO peeks at tail.
+    *********************************************/
+    int id = -1;
+    if (head != nullptr) {
+        id = (type == LIFO) ? head->data.id : tail->data.id;
+    }
+    return id;
 }
 
 int Queue::count() {
