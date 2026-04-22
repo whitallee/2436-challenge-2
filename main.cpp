@@ -301,5 +301,82 @@ int main() {
         cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/18" << endl << endl;
     }
 
+    // ================================================
+    // SECTION 5: LIFO Order
+    // ================================================
+    cout << "=== Section 5: LIFO Order ===" << endl;
+    {
+        int pushed = 0, counted = 0, peeked = 0, found = 0, located = 0, pulled = 0;
+        Data dataBuffer;
+        string info = rand_string();
+
+        Queue lifo(LIFO);
+
+        // push 5 items in order 1-5; head will be 5, tail will be 1
+        for (int i = 1; i <= 5; i++) {
+            if (lifo.push(i, info)) {
+                pushed++;
+            }
+        }
+
+        // count should be 5
+        if (lifo.count() == 5) {
+            counted++;
+        }
+
+        // peek should return 5 (head, last pushed)
+        if (lifo.peek() == 5) {
+            peeked++;
+        }
+
+        // exists should be true for all 5 ids
+        for (int i = 1; i <= 5; i++) {
+            if (lifo.exists(i)) {
+                found++;
+            }
+        }
+
+        // find: position 0 = tail = id 1, position 4 = head = id 5
+        if (lifo.find(1) == 0) {
+            located++;
+        }
+        if (lifo.find(2) == 1) {
+            located++;
+        }
+        if (lifo.find(3) == 2) {
+            located++;
+        }
+        if (lifo.find(4) == 3) {
+            located++;
+        }
+        if (lifo.find(5) == 4) {
+            located++;
+        }
+
+        // pull should return 5, 4, 3, 2, 1 (LIFO: removes from head)
+        for (int i = 5; i >= 1; i--) {
+            if (lifo.pull(dataBuffer) && dataBuffer.id == i) {
+                pulled++;
+            }
+            if (lifo.count() == i - 1) {
+                counted++;
+            }
+        }
+
+        // count should be 0 after all pulls
+        if (lifo.count() == 0) {
+            counted++;
+        }
+
+        // pushed: 5/5 | counted: 7/7 | peeked: 1/1 | found: 5/5 | located: 5/5 | pulled: 5/5
+        cout << "pushed: " << pushed << "/5 | ";
+        cout << "counted: " << counted << "/7 | ";
+        cout << "peeked: " << peeked << "/1 | ";
+        cout << "found: " << found << "/5 | ";
+        cout << "located: " << located << "/5 | ";
+        cout << "pulled: " << pulled << "/5" << endl;
+        cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/28" << endl << endl;
+    }
+
     return 0;
 }
