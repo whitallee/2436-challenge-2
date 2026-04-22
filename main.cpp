@@ -38,6 +38,8 @@ int main() {
 
     srand(static_cast<unsigned>(time(NULL)));
 
+    int sectionsPassed = 0;
+
     // ================================================
     // SECTION 1: Constructor
     // ================================================
@@ -76,6 +78,10 @@ int main() {
         cout << "counted: " << counted << "/3 | ";
         cout << "peeked: " << peeked << "/3" << endl;
         cout << "total: " << (counted + peeked) << "/6" << endl << endl;
+
+        if (counted == 3 && peeked == 3) {
+            sectionsPassed++;
+        }
     }
 
     // ================================================
@@ -147,6 +153,10 @@ int main() {
         cout << "located: " << located << "/2 | ";
         cout << "cleared: " << cleared << "/2" << endl;
         cout << "total: " << (counted + peeked + pulled + found + located + cleared) << "/12" << endl << endl;
+
+        if (counted == 2 && peeked == 2 && pulled == 2 && found == 2 && located == 2 && cleared == 2) {
+            sectionsPassed++;
+        }
     }
 
     // ================================================
@@ -205,6 +215,10 @@ int main() {
         cout << "pushed: " << pushed << "/8 | ";
         cout << "counted: " << counted << "/2" << endl;
         cout << "total: " << (pushed + counted) << "/10" << endl << endl;
+
+        if (pushed == 8 && counted == 2) {
+            sectionsPassed++;
+        }
     }
 
     // ================================================
@@ -299,6 +313,10 @@ int main() {
         cout << "located: " << located << "/2 | ";
         cout << "pulled: " << pulled << "/4" << endl;
         cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/18" << endl << endl;
+
+        if (pushed == 2 && counted == 6 && peeked == 2 && found == 2 && located == 2 && pulled == 4) {
+            sectionsPassed++;
+        }
     }
 
     // ================================================
@@ -376,6 +394,10 @@ int main() {
         cout << "located: " << located << "/5 | ";
         cout << "pulled: " << pulled << "/5" << endl;
         cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/28" << endl << endl;
+
+        if (pushed == 5 && counted == 7 && peeked == 1 && found == 5 && located == 5 && pulled == 5) {
+            sectionsPassed++;
+        }
     }
 
     // ================================================
@@ -453,6 +475,10 @@ int main() {
         cout << "located: " << located << "/5 | ";
         cout << "pulled: " << pulled << "/5" << endl;
         cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/28" << endl << endl;
+
+        if (pushed == 5 && counted == 7 && peeked == 1 && found == 5 && located == 5 && pulled == 5) {
+            sectionsPassed++;
+        }
     }
 
     // ================================================
@@ -537,6 +563,10 @@ int main() {
         cout << "peeked: " << peeked << "/2 | ";
         cout << "pulled: " << pulled << "/2" << endl;
         cout << "total: " << (pushed + counted + peeked + pulled) << "/30" << endl << endl;
+
+        if (pushed == 20 && counted == 6 && peeked == 2 && pulled == 2) {
+            sectionsPassed++;
+        }
     }
 
     // ================================================
@@ -545,6 +575,8 @@ int main() {
     cout << "=== Section 8: Random Stress Test ===" << endl;
     {
         Data dataBuffer;
+        bool lifoStressPassed = false;
+        bool fifoStressPassed = false;
 
         Queue lifo(LIFO);
         Queue fifo(FIFO);
@@ -626,6 +658,7 @@ int main() {
                 }
             }
 
+            lifoStressPassed = (passed == total) && (startCount + netChange == lifo.count());
             cout << "  LIFO total: " << passed << "/" << total << " | ";
             cout << "net change check: " << (startCount + netChange == lifo.count() ? "passed" : "FAILED") << endl;
         }
@@ -692,10 +725,25 @@ int main() {
                 }
             }
 
+            fifoStressPassed = (passed == total) && (startCount + netChange == fifo.count());
             cout << "  FIFO total: " << passed << "/" << total << " | ";
             cout << "net change check: " << (startCount + netChange == fifo.count() ? "passed" : "FAILED") << endl;
         }
         cout << endl;
+
+        if (lifoStressPassed && fifoStressPassed) {
+            sectionsPassed++;
+        }
+    }
+
+    // ================================================
+    // FINAL RESULT
+    // ================================================
+    cout << "=== FINAL RESULT: " << sectionsPassed << "/8 SECTIONS PASSED ===" << endl;
+    if (sectionsPassed == 8) {
+        cout << "ALL TESTS PASSED" << endl;
+    } else {
+        cout << "SOME TESTS FAILED" << endl;
     }
 
     return 0;
