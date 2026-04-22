@@ -378,5 +378,82 @@ int main() {
         cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/28" << endl << endl;
     }
 
+    // ================================================
+    // SECTION 6: FIFO Order
+    // ================================================
+    cout << "=== Section 6: FIFO Order ===" << endl;
+    {
+        int pushed = 0, counted = 0, peeked = 0, found = 0, located = 0, pulled = 0;
+        Data dataBuffer;
+        string info = rand_string();
+
+        Queue fifo(FIFO);
+
+        // push 5 items in order 1-5; head will be 5, tail will be 1
+        for (int i = 1; i <= 5; i++) {
+            if (fifo.push(i, info)) {
+                pushed++;
+            }
+        }
+
+        // count should be 5
+        if (fifo.count() == 5) {
+            counted++;
+        }
+
+        // peek should return 1 (tail, first pushed)
+        if (fifo.peek() == 1) {
+            peeked++;
+        }
+
+        // exists should be true for all 5 ids
+        for (int i = 1; i <= 5; i++) {
+            if (fifo.exists(i)) {
+                found++;
+            }
+        }
+
+        // find: position 0 = head = id 5 (last pushed), counting toward tail
+        if (fifo.find(5) == 0) {
+            located++;
+        }
+        if (fifo.find(4) == 1) {
+            located++;
+        }
+        if (fifo.find(3) == 2) {
+            located++;
+        }
+        if (fifo.find(2) == 3) {
+            located++;
+        }
+        if (fifo.find(1) == 4) {
+            located++;
+        }
+
+        // pull should return 1, 2, 3, 4, 5 (FIFO: removes from tail)
+        for (int i = 1; i <= 5; i++) {
+            if (fifo.pull(dataBuffer) && dataBuffer.id == i) {
+                pulled++;
+            }
+            if (fifo.count() == 5 - i) {
+                counted++;
+            }
+        }
+
+        // count should be 0 after all pulls
+        if (fifo.count() == 0) {
+            counted++;
+        }
+
+        // pushed: 5/5 | counted: 7/7 | peeked: 1/1 | found: 5/5 | located: 5/5 | pulled: 5/5
+        cout << "pushed: " << pushed << "/5 | ";
+        cout << "counted: " << counted << "/7 | ";
+        cout << "peeked: " << peeked << "/1 | ";
+        cout << "found: " << found << "/5 | ";
+        cout << "located: " << located << "/5 | ";
+        cout << "pulled: " << pulled << "/5" << endl;
+        cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/28" << endl << endl;
+    }
+
     return 0;
 }
