@@ -176,5 +176,80 @@ int main() {
         cout << "correct: " << correct << " | incorrect: " << incorrect << endl << endl;
     }
 
+    // ================================================
+    // SECTION 3: Invalid Push
+    // ================================================
+    cout << "=== Section 3: Invalid Push ===" << endl;
+    {
+        int rejected = 0, notRejected = 0;
+        string emptyString = "";
+        string validString = rand_string();
+
+        Queue lifo(LIFO);
+        Queue fifo(FIFO);
+
+        // id = 0 should fail
+        if (!lifo.push(0, validString)) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+        if (!fifo.push(0, validString)) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+
+        // negative id should fail
+        if (!lifo.push(-1, validString)) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+        if (!fifo.push(-1, validString)) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+
+        // large negative id should fail
+        if (!lifo.push(-MAX_ID, validString)) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+        if (!fifo.push(-MAX_ID, validString)) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+
+        // empty string should fail
+        if (!lifo.push(1, emptyString)) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+        if (!fifo.push(1, emptyString)) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+
+        // count should still be 0 after all invalid pushes
+        if (lifo.count() == 0) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+        if (fifo.count() == 0) {
+            rejected++;
+        } else {
+            notRejected++;
+        }
+
+        cout << "rejected: " << rejected << " | notRejected: " << notRejected << endl << endl;
+    }
+
     return 0;
 }
