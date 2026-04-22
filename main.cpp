@@ -41,51 +41,41 @@ int main() {
     // ================================================
     // SECTION 1: Constructor
     // ================================================
-
     cout << "=== Section 1: Constructor ===" << endl;
     {
-        int constructed = 0, notConstructed = 0;
+        int counted = 0, peeked = 0;
 
         // default constructor should produce a valid empty LIFO queue
         Queue defaultQueue;
         if (defaultQueue.count() == 0) {
-            constructed++;
-        } else {
-            notConstructed++;
+            counted++;
         }
         if (defaultQueue.peek() == -1) {
-            constructed++;
-        } else {
-            notConstructed++;
+            peeked++;
         }
 
         // explicit LIFO
         Queue lifo(LIFO);
         if (lifo.count() == 0) {
-            constructed++;
-        } else {
-            notConstructed++;
+            counted++;
         }
         if (lifo.peek() == -1) {
-            constructed++;
-        } else {
-            notConstructed++;
+            peeked++;
         }
 
         // explicit FIFO
         Queue fifo(FIFO);
         if (fifo.count() == 0) {
-            constructed++;
-        } else {
-            notConstructed++;
+            counted++;
         }
         if (fifo.peek() == -1) {
-            constructed++;
-        } else {
-            notConstructed++;
+            peeked++;
         }
 
-        cout << "constructed: " << constructed << " | notConstructed: " << notConstructed << endl << endl;
+        // counted: 3/3 | peeked: 3/3
+        cout << "counted: " << counted << "/3 | ";
+        cout << "peeked: " << peeked << "/3" << endl;
+        cout << "total: " << (counted + peeked) << "/6" << endl << endl;
     }
 
     // ================================================
@@ -93,7 +83,7 @@ int main() {
     // ================================================
     cout << "=== Section 2: Empty Queue ===" << endl;
     {
-        int correct = 0, incorrect = 0;
+        int counted = 0, peeked = 0, pulled = 0, found = 0, located = 0, cleared = 0;
         Data dataBuffer;
 
         Queue lifo(LIFO);
@@ -101,79 +91,62 @@ int main() {
 
         // count on empty should be 0
         if (lifo.count() == 0) {
-            correct++;
-        } else {
-            incorrect++;
+            counted++;
         }
         if (fifo.count() == 0) {
-            correct++;
-        } else {
-            incorrect++;
+            counted++;
         }
 
         // peek on empty should return -1
         if (lifo.peek() == -1) {
-            correct++;
-        } else {
-            incorrect++;
+            peeked++;
         }
         if (fifo.peek() == -1) {
-            correct++;
-        } else {
-            incorrect++;
+            peeked++;
         }
 
-        // pull on empty should return false and set d to {-1, ""}
+        // pull on empty should return false and set dataBuffer to {-1, ""}
         if (!lifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
-            correct++;
-        } else {
-            incorrect++;
+            pulled++;
         }
         if (!fifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
-            correct++;
-        } else {
-            incorrect++;
+            pulled++;
         }
 
         // exists on empty should return false
         if (!lifo.exists(1)) {
-            correct++;
-        } else {
-            incorrect++;
+            found++;
         }
         if (!fifo.exists(1)) {
-            correct++;
-        } else {
-            incorrect++;
+            found++;
         }
 
         // find on empty should return -1
         if (lifo.find(1) == -1) {
-            correct++;
-        } else {
-            incorrect++;
+            located++;
         }
         if (fifo.find(1) == -1) {
-            correct++;
-        } else {
-            incorrect++;
+            located++;
         }
 
-        // clear on empty should not crash and leave count at 0
+        // clear on empty should not crash, count stays 0
         lifo.clear();
         fifo.clear();
         if (lifo.count() == 0) {
-            correct++;
-        } else {
-            incorrect++;
+            cleared++;
         }
         if (fifo.count() == 0) {
-            correct++;
-        } else {
-            incorrect++;
+            cleared++;
         }
 
-        cout << "correct: " << correct << " | incorrect: " << incorrect << endl << endl;
+        // counted: 2/2 | peeked: 2/2 | pulled: 2/2 | found: 2/2 | located: 2/2 | cleared: 2/2
+        cout << "counted: " << counted << "/2 | ";
+        cout << "peeked: " << peeked << "/2 | ";
+        cout << "pulled: " << pulled << "/2 | ";
+        cout << "found: " << found << "/2 | ";
+        cout << "located: " << located << "/2 | ";
+        cout << "cleared: " << cleared << "/2" << endl;
+        cout << "total: " << (counted + peeked + pulled + found + located + cleared) << "/12" << endl << endl;
     }
 
     // ================================================
@@ -181,7 +154,7 @@ int main() {
     // ================================================
     cout << "=== Section 3: Invalid Push ===" << endl;
     {
-        int rejected = 0, notRejected = 0;
+        int pushed = 0, counted = 0;
         string emptyString = "";
         string validString = rand_string();
 
@@ -190,65 +163,48 @@ int main() {
 
         // id = 0 should fail
         if (!lifo.push(0, validString)) {
-            rejected++;
-        } else {
-            notRejected++;
+            pushed++;
         }
         if (!fifo.push(0, validString)) {
-            rejected++;
-        } else {
-            notRejected++;
+            pushed++;
         }
 
         // negative id should fail
         if (!lifo.push(-1, validString)) {
-            rejected++;
-        } else {
-            notRejected++;
+            pushed++;
         }
         if (!fifo.push(-1, validString)) {
-            rejected++;
-        } else {
-            notRejected++;
+            pushed++;
         }
 
         // large negative id should fail
         if (!lifo.push(-MAX_ID, validString)) {
-            rejected++;
-        } else {
-            notRejected++;
+            pushed++;
         }
         if (!fifo.push(-MAX_ID, validString)) {
-            rejected++;
-        } else {
-            notRejected++;
+            pushed++;
         }
 
         // empty string should fail
         if (!lifo.push(1, emptyString)) {
-            rejected++;
-        } else {
-            notRejected++;
+            pushed++;
         }
         if (!fifo.push(1, emptyString)) {
-            rejected++;
-        } else {
-            notRejected++;
+            pushed++;
         }
 
         // count should still be 0 after all invalid pushes
         if (lifo.count() == 0) {
-            rejected++;
-        } else {
-            notRejected++;
+            counted++;
         }
         if (fifo.count() == 0) {
-            rejected++;
-        } else {
-            notRejected++;
+            counted++;
         }
 
-        cout << "rejected: " << rejected << " | notRejected: " << notRejected << endl << endl;
+        // pushed: 8/8 | counted: 2/2
+        cout << "pushed: " << pushed << "/8 | ";
+        cout << "counted: " << counted << "/2" << endl;
+        cout << "total: " << (pushed + counted) << "/10" << endl << endl;
     }
 
     // ================================================
@@ -256,7 +212,7 @@ int main() {
     // ================================================
     cout << "=== Section 4: Single Element ===" << endl;
     {
-        int correct = 0, incorrect = 0;
+        int pushed = 0, counted = 0, peeked = 0, found = 0, located = 0, pulled = 0;
         Data dataBuffer;
         string info = rand_string();
 
@@ -264,106 +220,85 @@ int main() {
         Queue fifo(FIFO);
 
         // push one item into each
-        lifo.push(1, info);
-        fifo.push(1, info);
+        if (lifo.push(1, info)) {
+            pushed++;
+        }
+        if (fifo.push(1, info)) {
+            pushed++;
+        }
 
         // count should be 1
         if (lifo.count() == 1) {
-            correct++;
-        } else {
-            incorrect++;
+            counted++;
         }
         if (fifo.count() == 1) {
-            correct++;
-        } else {
-            incorrect++;
+            counted++;
         }
 
         // peek should return that id without removing it
         if (lifo.peek() == 1) {
-            correct++;
-        } else {
-            incorrect++;
+            peeked++;
         }
         if (fifo.peek() == 1) {
-            correct++;
-        } else {
-            incorrect++;
+            peeked++;
         }
 
         // count should still be 1 after peek
         if (lifo.count() == 1) {
-            correct++;
-        } else {
-            incorrect++;
+            counted++;
         }
         if (fifo.count() == 1) {
-            correct++;
-        } else {
-            incorrect++;
+            counted++;
         }
 
         // exists should return true
         if (lifo.exists(1)) {
-            correct++;
-        } else {
-            incorrect++;
+            found++;
         }
         if (fifo.exists(1)) {
-            correct++;
-        } else {
-            incorrect++;
+            found++;
         }
 
         // find should return position 0
         if (lifo.find(1) == 0) {
-            correct++;
-        } else {
-            incorrect++;
+            located++;
         }
         if (fifo.find(1) == 0) {
-            correct++;
-        } else {
-            incorrect++;
+            located++;
         }
 
         // pull should return true with correct data
         if (lifo.pull(dataBuffer) && dataBuffer.id == 1 && dataBuffer.information == info) {
-            correct++;
-        } else {
-            incorrect++;
+            pulled++;
         }
         if (fifo.pull(dataBuffer) && dataBuffer.id == 1 && dataBuffer.information == info) {
-            correct++;
-        } else {
-            incorrect++;
+            pulled++;
         }
 
         // count should be 0 after pull
         if (lifo.count() == 0) {
-            correct++;
-        } else {
-            incorrect++;
+            counted++;
         }
         if (fifo.count() == 0) {
-            correct++;
-        } else {
-            incorrect++;
+            counted++;
         }
 
         // second pull should fail and set dataBuffer to {-1, ""}
         if (!lifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
-            correct++;
-        } else {
-            incorrect++;
+            pulled++;
         }
         if (!fifo.pull(dataBuffer) && dataBuffer.id == -1 && dataBuffer.information == "") {
-            correct++;
-        } else {
-            incorrect++;
+            pulled++;
         }
 
-        cout << "correct: " << correct << " | incorrect: " << incorrect << endl << endl;
+        // pushed: 2/2 | counted: 6/6 | peeked: 2/2 | found: 2/2 | located: 2/2 | pulled: 4/4
+        cout << "pushed: " << pushed << "/2 | ";
+        cout << "counted: " << counted << "/6 | ";
+        cout << "peeked: " << peeked << "/2 | ";
+        cout << "found: " << found << "/2 | ";
+        cout << "located: " << located << "/2 | ";
+        cout << "pulled: " << pulled << "/4" << endl;
+        cout << "total: " << (pushed + counted + peeked + found + located + pulled) << "/18" << endl << endl;
     }
 
     return 0;
