@@ -38,6 +38,14 @@ int Queue::peek() {
 }
 
 int Queue::count() {
+    /* ****************************************
+    count - return the number of items in the queue
+
+    @param none
+    @return int number of items currently in the queue
+    @exception none
+    @note none
+    *********************************************/
     return size;
 }
 
