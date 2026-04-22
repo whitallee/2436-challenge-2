@@ -539,5 +539,164 @@ int main() {
         cout << "total: " << (pushed + counted + peeked + pulled) << "/30" << endl << endl;
     }
 
+    // ================================================
+    // SECTION 8: Random Stress Test
+    // ================================================
+    cout << "=== Section 8: Random Stress Test ===" << endl;
+    {
+        Data dataBuffer;
+
+        Queue lifo(LIFO);
+        Queue fifo(FIFO);
+
+        // seed both queues with initial items before stress test
+        for (int i = 0; i < SEED_SIZE; i++) {
+            string str = rand_string();
+            lifo.push((rand() % MAX_ID) + 1, str);
+            fifo.push((rand() % MAX_ID) + 1, str);
+        }
+
+        // cases 1-2: push valid (mutating x2)
+        // cases 3-4: pull (mutating x2)
+        // case 5: peek (read-only)
+        // case 6: count (read-only)
+        // case 7: exists (read-only)
+        // case 8: find (read-only)
+        // case 9: push invalid (rejection test)
+
+        // LIFO stress test
+        cout << "running LIFO stress test (" << RANDOM_ITERATIONS << " iterations)..." << endl;
+        {
+            int passed = 0, total = 0;
+            int startCount = lifo.count();
+            int netChange = 0;
+
+            for (int i = 0; i < RANDOM_ITERATIONS; i++) {
+                switch (rand() % CHOICES + 1) {
+                    case 1:
+                    case 2: {
+                        string str = rand_string();
+                        total++;
+                        if (lifo.push((rand() % MAX_ID) + 1, str)) {
+                            passed++;
+                            netChange++;
+                        }
+                        break;
+                    }
+                    case 3:
+                    case 4:
+                        total++;
+                        if (lifo.pull(dataBuffer)) {
+                            passed++;
+                            netChange--;
+                        } else if (lifo.count() == 0) {
+                            passed++;
+                        }
+                        break;
+                    case 5:
+                        total++;
+                        if ((lifo.count() == 0 && lifo.peek() == -1) || (lifo.count() > 0 && lifo.peek() > 0)) {
+                            passed++;
+                        }
+                        break;
+                    case 6:
+                        total++;
+                        if (lifo.count() >= 0) {
+                            passed++;
+                        }
+                        break;
+                    case 7:
+                        total++;
+                        lifo.exists((rand() % MAX_ID) + 1);
+                        passed++;
+                        break;
+                    case 8:
+                        total++;
+                        lifo.find((rand() % MAX_ID) + 1);
+                        passed++;
+                        break;
+                    case 9: {
+                        string str = rand_string();
+                        total++;
+                        if (!lifo.push(-(rand() % MAX_ID + 1), str)) {
+                            passed++;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            cout << "  LIFO total: " << passed << "/" << total << " | ";
+            cout << "net change check: " << (startCount + netChange == lifo.count() ? "passed" : "FAILED") << endl;
+        }
+
+        // FIFO stress test
+        cout << "running FIFO stress test (" << RANDOM_ITERATIONS << " iterations)..." << endl;
+        {
+            int passed = 0, total = 0;
+            int startCount = fifo.count();
+            int netChange = 0;
+
+            for (int i = 0; i < RANDOM_ITERATIONS; i++) {
+                switch (rand() % CHOICES + 1) {
+                    case 1:
+                    case 2: {
+                        string str = rand_string();
+                        total++;
+                        if (fifo.push((rand() % MAX_ID) + 1, str)) {
+                            passed++;
+                            netChange++;
+                        }
+                        break;
+                    }
+                    case 3:
+                    case 4:
+                        total++;
+                        if (fifo.pull(dataBuffer)) {
+                            passed++;
+                            netChange--;
+                        } else if (fifo.count() == 0) {
+                            passed++;
+                        }
+                        break;
+                    case 5:
+                        total++;
+                        if ((fifo.count() == 0 && fifo.peek() == -1) || (fifo.count() > 0 && fifo.peek() > 0)) {
+                            passed++;
+                        }
+                        break;
+                    case 6:
+                        total++;
+                        if (fifo.count() >= 0) {
+                            passed++;
+                        }
+                        break;
+                    case 7:
+                        total++;
+                        fifo.exists((rand() % MAX_ID) + 1);
+                        passed++;
+                        break;
+                    case 8:
+                        total++;
+                        fifo.find((rand() % MAX_ID) + 1);
+                        passed++;
+                        break;
+                    case 9: {
+                        string str = rand_string();
+                        total++;
+                        if (!fifo.push(-(rand() % MAX_ID + 1), str)) {
+                            passed++;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            cout << "  FIFO total: " << passed << "/" << total << " | ";
+            cout << "net change check: " << (startCount + netChange == fifo.count() ? "passed" : "FAILED") << endl;
+        }
+        cout << endl;
+    }
+
     return 0;
 }
