@@ -10,6 +10,14 @@
 #include "queue.h"
 
 Queue::Queue(bool type) {
+    /* ****************************************
+    Constructor - initialize the queue
+
+    @param type (bool) : LIFO or FIFO (true or false respectively)
+    @return none
+    @exception none
+    @note defaults to LIFO if no argument is passed
+    *********************************************/
     this->type = type;
     head = nullptr;
     tail = nullptr;
@@ -17,6 +25,14 @@ Queue::Queue(bool type) {
 }
 
 Queue::~Queue() {
+    /* ****************************************
+    Destructor - clear all remaining nodes
+
+    @param none
+    @return none
+    @exception none
+    @note none
+    *********************************************/
     clear();
 }
 
@@ -126,11 +142,11 @@ bool Queue::pull(Data& dataOut) {
     /* ****************************************
     pull - remove the next item from the queue
 
-    @param d (Data&) : struct to fill with pulled data
+    @param dataOut (Data&) : struct to fill with pulled data
     @return true if pulled successfully, false if empty
     @exception none
     @note LIFO removes from head; FIFO removes from tail.
-          Sets d to {-1, ""} if queue is empty.
+          Sets dataOut to {-1, ""} if queue is empty.
     *********************************************/
     bool pulled = false;
     if (head != nullptr) {

@@ -33,7 +33,7 @@ public:
     /**********************
      * Constructors/Destructor
      **********************/
-    Queue(bool = LIFO);
+    Queue(bool = LIFO); // LIFO is true and FIFO is false (defined in this header file)
     ~Queue();
 
     /**********************
